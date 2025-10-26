@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>অ্যাডমিন লগইন | রক্ত দান বন্ধু ফাউন্ডেশন</title>
+<style>
+/* --- Common Layout --- */
+body {
+  font-family: 'Noto Sans Bengali', sans-serif;
+  margin: 0;
+  background: #fff4f4;
+}
+
+/* Header */
+header {
+  background: linear-gradient(90deg, #e63946, #f55c5c);
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+header img {
+  width: 50px;
+  margin-right: 10px;
+}
+header h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+/* Navigation */
+nav {
+  background: #f4a261;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+nav a {
+  color: white;
+  text-decoration: none;
+  margin: 0 15px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+nav a:hover {
+  transform: scale(1.1);
+}
+nav a.active {
+  text-decoration: underline;
+}
+
+/* Main Section */
+main {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+}
+
+/* Login Form */
+form {
+  background: white;
+  padding: 30px 25px;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+  max-width: 380px;
+  width: 100%;
+  text-align: center;
+}
+
+form h2 {
+  margin-bottom: 20px;
+  color: #e63946;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+button {
+  background: #e63946;
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  margin-top: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  width: 100%;
+  font-size: 16px;
+  transition: 0.3s;
+}
+button:hover {
+  background: #d62828;
+}
+
+/* Message */
+#msg {
+  margin-top: 12px;
+  font-weight: bold;
+  color: #e63946;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  background: #264653;
+  color: white;
+  padding: 10px;
+  margin-top: 30px;
+}
+</style>
+</head>
+<body>
+
+
+<!-- 🩸 Header Section -->
+<header>
+  <div style="display:flex;align-items:center;">
+    <img src="https://cdn-icons-png.flaticon.com/512/2966/2966327.png" alt="logo">
+    <h1>রক্ত দান বন্ধু ফাউন্ডেশন</h1>
+  </div>
+</header>
+
+<!-- 🧭 Navigation Menu -->
+<nav>
+  <a href="index.html" class="active">🏠 হোম</a>
+  <a href="register.html">🩸 রেজিস্ট্রেশন</a>
+  <a href="donorlist.html">📋 ডোনার লিস্ট</a>
+  <a href="donor-card.html">🪪 আইডি কার্ড</a>
+  <a href="login.html">🔐 লগইন</a>
+  <a href="contact.html">📞 যোগাযোগ</a>
+</nav>
+
+<!-- Main -->
+<main>
+  <form id="adminLoginForm">
+    <h2>অ্যাডমিন লগইন</h2>
+    <input type="text" name="username" placeholder="ইউজারনেম" required>
+    <input type="password" name="password" placeholder="পাসওয়ার্ড" required>
+    <button type="submit">লগইন</button>
+    <p id="msg"></p>
+  </form>
+</main>
+
+<!-- Footer -->
+<footer>
+  © ২০২৪-২০২৫ রক্ত দান বন্ধু ফাউন্ডেশন | Developed by Bright IT
+</footer>
+
+<script>
+// Simple admin login (ডেমো উদ্দেশ্যে)
+const adminUsername = "admin";
+const adminPassword = "123456";
+
+document.getElementById("adminLoginForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  const formData = new FormData(this);
+  const user = formData.get("username").trim();
+  const pass = formData.get("password").trim();
+  const msg = document.getElementById("msg");
+
+  if(user === adminUsername && pass === adminPassword){
+    msg.style.color = "green";
+    msg.innerText = "✅ লগইন সফল! রিডাইরেক্ট করা হচ্ছে...";
+    setTimeout(() => {
+      window.location.href = "donorlist.html";
+    }, 1200);
+  } else {
+    msg.style.color = "#e63946";
+    msg.innerText = "❌ ইউজারনেম বা পাসওয়ার্ড ভুল!";
+  }
+});
+</script>
+
+</body>
+</html>
