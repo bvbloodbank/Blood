@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> রক্তদান বন্ধু ফাউন্ডেশন</title>
+<title>রক্ত দান বন্ধু ফাউন্ডেশন</title>
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2966/2966327.png">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Noto Sans Bengali',sans-serif;}
@@ -108,12 +109,12 @@ footer{
 
 <!-- 🧭 Navigation Menu -->
 <nav>
-  <a href="index.html" class="active">হোম</a>
-  <a href="register.html">রেজিস্ট্রেশন</a>
-  <a href="donors.html">ডোনার লিস্ট</a>
-  <a href="donor-card.html">ডোনার আইডি কার্ড</a>
-  <a href="donate.html">রক্ত দিন</a>
-  <a href="contact.html">যোগাযোগ</a>
+  <a href="index.html" class="active">🏠 হোম</a>
+  <a href="register.html">🩸 রেজিস্ট্রেশন</a>
+  <a href="donorlist.html">📋 ডোনার লিস্ট</a>
+  <a href="donor-card.html">🪪 আইডি কার্ড</a>
+  <a href="login.html">🔐 লগইন</a>
+  <a href="contact.html">📞 যোগাযোগ</a>
 </nav>
 
 <!-- 📊 Summary Stats -->
@@ -145,59 +146,56 @@ footer{
 </section>
 
 <footer>
-  © DEV- BRIGHT IT | সর্বস্বত্ব সংরক্ষিত
+  © ২০২৪- ২০২৫ রক্ত দান বন্ধু ফাউন্ডেশন | Developed by Bright IT
 </footer>
 
 <script>
-// ⚙️ ডেমো ডেটা (পরে Google Sheet দিয়ে সংযুক্ত করা যাবে)
-const stats = {
-  totalDonors: 124,
-  totalDonation: 368,
-  todayDonation: 5
-};
-const newDonorsData=[
-  {name:"রাফি",blood:"A+",photo:"https://i.pravatar.cc/100?img=1"},
-  {name:"সোহানা",blood:"B+",photo:"https://i.pravatar.cc/100?img=2"},
-  {name:"মেহেদী",blood:"O+",photo:"https://i.pravatar.cc/100?img=3"},
-  {name:"রিমা",blood:"AB-",photo:"https://i.pravatar.cc/100?img=4"}
-];
-const topDonorsData=[
-  {name:"তানভীর",total:8,photo:"https://i.pravatar.cc/100?img=5"},
-  {name:"মৌ",total:7,photo:"https://i.pravatar.cc/100?img=6"},
-  {name:"রাহুল",total:6,photo:"https://i.pravatar.cc/100?img=7"},
-  {name:"নাজমা",total:5,photo:"https://i.pravatar.cc/100?img=8"}
-];
+const SHEET_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL"; // এখানে তোমার স্ক্রিপ্ট লিংক দাও
 
-// Load dynamic data
-function loadData(){
-  document.getElementById("totalDonors").innerText=stats.totalDonors;
-  document.getElementById("totalDonation").innerText=stats.totalDonation;
-  document.getElementById("todayDonation").innerText=stats.todayDonation;
+async function loadData(){
+  try {
+    const res = await fetch(SHEET_URL);
+    const data = await res.json();
 
-  const newD=document.getElementById("newDonors");
-  const topD=document.getElementById("topDonors");
+    if (!Array.isArray(data)) return;
 
-  newDonorsData.forEach(d=>{
-    newD.innerHTML+=`
+    const totalDonors = data.length;
+    const totalDonation = data.reduce((sum,d)=>sum+(+d.TotalDonate||0),0);
+
+    const today = new Date().toISOString().split('T')[0];
+    const todayDonation = data.filter(d=>new Date(d.LastDonate).toISOString().split('T')[0]===today).length;
+
+    document.getElementById("totalDonors").innerText = totalDonors;
+    document.getElementById("totalDonation").innerText = totalDonation;
+    document.getElementById("todayDonation").innerText = todayDonation;
+
+    const newDonors = data.slice(-4).reverse();
+    const topDonors = [...data].sort((a,b)=>b.TotalDonate - a.TotalDonate).slice(0,4);
+
+    renderDonors("newDonors", newDonors, false);
+    renderDonors("topDonors", topDonors, true);
+  } catch (err) {
+    console.error("Error:", err);
+  }
+}
+
+function renderDonors(elementId, donors, showTotal){
+  const container = document.getElementById(elementId);
+  container.innerHTML = "";
+  donors.forEach(d=>{
+    container.innerHTML += `
       <div class="donor-card">
-        <img src="${d.photo}" alt="${d.name}">
-        <h4>${d.name}</h4>
-        <p>${d.blood}</p>
-      </div>`;
-  });
-  topDonorsData.forEach(d=>{
-    topD.innerHTML+=`
-      <div class="donor-card">
-        <img src="${d.photo}" alt="${d.name}">
-        <h4>${d.name}</h4>
-        <p>দান: ${d.total}</p>
-      </div>`;
+        <img src="${d.Photo || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'}" alt="${d.Name}">
+        <h4>${d.Name}</h4>
+        <p>${d.Blood}</p>
+        ${showTotal ? `<small>মোট দান: ${d.TotalDonate}</small>` : ""}
+      </div>
+    `;
   });
 }
+
 loadData();
 </script>
 
 </body>
 </html>
-
-
